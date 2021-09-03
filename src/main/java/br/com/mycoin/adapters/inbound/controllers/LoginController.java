@@ -1,8 +1,11 @@
 package br.com.mycoin.adapters.inbound.controllers;
 
 import br.com.mycoin.adapters.dtos.AccountDto;
+import br.com.mycoin.adapters.dtos.BankDto;
 import br.com.mycoin.adapters.response.ResponseModel;
 import br.com.mycoin.application.domain.Account;
+import br.com.mycoin.application.domain.Bank;
+import br.com.mycoin.application.domain.PersonalData;
 import br.com.mycoin.application.ports.inbound.LoginServicePort;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(value = "MyCoin - Login Service")
 @RestController
@@ -24,7 +29,7 @@ import javax.validation.Valid;
 @Slf4j
 public class LoginController {
     @Autowired
-    private LoginServicePort loginService;
+    private LoginServicePort loginServicePort;
 
     @ApiOperation(value = "Register an user")
     @ApiResponses(value = @ApiResponse(code = 200, message = "OK", response = String.class))
@@ -35,9 +40,23 @@ public class LoginController {
 
         log.info("Registering a new account..");
         Account account = new Account();
+        PersonalData personalData = new PersonalData();
+        List<Bank> banks = new ArrayList<Bank>();
+
+        BeanUtils.copyProperties(register.getPersonalData(), personalData);
+        for (BankDto source: register.getBanks() ) {
+            Bank target = new Bank();
+            BeanUtils.copyProperties(source , target);
+            banks.add(target);
+            log.info(target.toString());
+        }
+
+        account.setBanks(banks);
+        log.info("tamanho: " + account.getBanks());
+        account.setPersonalData(personalData);
         BeanUtils.copyProperties(register, account);
 
-        return new ResponseEntity<>(loginService.registerAccount(account), HttpStatus.CREATED);
+        return new ResponseEntity<>(loginServicePort.registerAccount(account), HttpStatus.CREATED);
     }
 
     // Este método pegará todos os erros referentes ao não preenchimento de um campo obrigatório

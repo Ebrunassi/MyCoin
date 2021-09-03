@@ -5,11 +5,18 @@ import br.com.mycoin.application.domain.enums.Category;
 import br.com.mycoin.application.domain.enums.EntryType;
 import br.com.mycoin.application.domain.enums.Status;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
+@Builder
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EntryDto {
     @ApiModelProperty(example = "VARIABLE_COST")
     @NotNull(message = "The entry type must not be null")
@@ -29,4 +36,5 @@ public class EntryDto {
     private Integer instalmentsTotal;
     @ApiModelProperty(example = "1")
     private Integer instalmentNumber;
+
 }

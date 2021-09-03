@@ -1,9 +1,8 @@
 package br.com.mycoin.application.domain;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Builder
 @Data
@@ -11,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonalData {
+public class Bank {
     private String name;
-    private String email;
+    private Integer invoiceDueDay;
 }

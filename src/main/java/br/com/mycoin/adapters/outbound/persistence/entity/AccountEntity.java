@@ -1,6 +1,7 @@
 package br.com.mycoin.adapters.outbound.persistence.entity;
 
 
+import br.com.mycoin.application.domain.Bank;
 import br.com.mycoin.application.domain.PersonalData;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Document(collection = "users")
 @Builder
@@ -28,6 +30,7 @@ public class AccountEntity {
     private String password;
     @Valid
     private PersonalData personalData;
+    private List<Bank> banks;
 
     public AccountEntity(String username, String password) {
         this.username = username;
@@ -63,6 +66,14 @@ public class AccountEntity {
 
     public void setPersonalData(PersonalData personalData) {
         this.personalData = personalData;
+    }
+
+    public List<Bank> getBanks() {
+        return banks;
+    }
+
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
     }
 }
 

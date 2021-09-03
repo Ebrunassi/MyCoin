@@ -61,4 +61,26 @@ public class TokenAuthenticationService {
             return null;
         }
     }
+
+    public static String authenticateToken(String token) {
+        try {
+
+            if (token != null) {
+                // faz parse do token
+                String user = Jwts.parser()
+                        .setSigningKey(SECRET)
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                        .getBody()
+                        .getSubject();
+
+                if (user != null) {
+                    return user;
+                }
+            }
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
