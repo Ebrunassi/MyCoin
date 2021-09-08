@@ -1,8 +1,6 @@
 package br.com.mycoin.application.domain;
 
-import br.com.mycoin.application.domain.enums.Category;
-import br.com.mycoin.application.domain.enums.EntryType;
-import br.com.mycoin.application.domain.enums.Status;
+import br.com.mycoin.application.domain.enums.*;
 import lombok.*;
 
 import java.util.Date;
@@ -28,4 +26,12 @@ public class Entry {
     private Date creationDate;
     private Status status;
     private List<Situation> situationHistory;
+
+    public void addSituation(StatusEnum status, EventEnum event){
+        this.situationHistory.add(Situation.builder()
+                .status(status)
+                .event(event)
+                .processDate(new Date())
+                .build());
+    }
 }

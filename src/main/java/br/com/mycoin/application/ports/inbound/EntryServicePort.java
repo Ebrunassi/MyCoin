@@ -5,5 +5,6 @@ import br.com.mycoin.application.domain.Entry;
 public interface EntryServicePort {
 
     Entry registerEntry(Entry entry);
+    void processEntry(Entry entry);
 
 }
