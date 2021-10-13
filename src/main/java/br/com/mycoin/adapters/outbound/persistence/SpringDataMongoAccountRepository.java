@@ -1,4 +1,4 @@
-package br.com.mycoin.adapters.outbound;
+package br.com.mycoin.adapters.outbound.persistence;
 
 import br.com.mycoin.adapters.outbound.persistence.entity.AccountEntity;
 import br.com.mycoin.application.domain.Account;

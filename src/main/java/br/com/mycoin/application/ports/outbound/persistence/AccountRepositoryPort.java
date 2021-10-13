@@ -1,4 +1,4 @@
-package br.com.mycoin.application.ports.outbound;
+package br.com.mycoin.application.ports.outbound.persistence;
 
 import br.com.mycoin.application.domain.Account;
 

@@ -1,9 +1,7 @@
 package br.com.mycoin.adapters.outbound.persistence.entity;
 
 import br.com.mycoin.application.domain.Situation;
-import br.com.mycoin.application.domain.enums.Category;
-import br.com.mycoin.application.domain.enums.EntryType;
-import br.com.mycoin.application.domain.enums.Status;
+import br.com.mycoin.application.domain.enums.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -31,6 +29,7 @@ public class EntryEntity {
     private Integer instalmentsTotal;
     private Integer instalmentNumber;
     private Date creationDate;
-    private Status status;
+    private StatusEnum status;
+    private EventEnum event;
     private List<Situation> situationHistory;
 }

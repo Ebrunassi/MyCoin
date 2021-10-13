@@ -27,7 +27,7 @@ public class EntryController {
     @Autowired
     private EntryServicePort entryServicePort;
 
-    @ApiOperation(value = "Register an user")
+    @ApiOperation(value = "Register an entry")
     @ApiResponses(value = @ApiResponse(code = 200, message = "OK", response = String.class))
     @Transactional
     @RequestMapping(value = "/entry", method = RequestMethod.POST, produces = "application/json")

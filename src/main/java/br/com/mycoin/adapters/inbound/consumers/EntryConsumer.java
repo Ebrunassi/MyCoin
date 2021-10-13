@@ -23,7 +23,7 @@ public class EntryConsumer {
         try {
             Entry entry = mapper.readValue(message, Entry.class);
             System.out.println("--------> " + entry.toString());
-            entryServicePort.processEntry(entry);
+            entryServicePort.receiveEntryQueue(entry);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

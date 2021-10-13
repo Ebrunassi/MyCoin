@@ -1,8 +1,10 @@
 package br.com.mycoin.adapters.configuration;
 
 import br.com.mycoin.MyCoinApplication;
-import br.com.mycoin.application.ports.outbound.AccountRepositoryPort;
-import br.com.mycoin.application.ports.outbound.EntryRepositoryPort;
+import br.com.mycoin.adapters.outbound.queue.RabbitMq;
+import br.com.mycoin.application.ports.outbound.persistence.AccountRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.EntryRepositoryPort;
+import br.com.mycoin.application.ports.outbound.queue.QueuePort;
 import br.com.mycoin.application.services.EntryServiceImpl;
 import br.com.mycoin.application.services.LoginServiceImpl;
 import org.modelmapper.ModelMapper;
@@ -20,8 +22,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    EntryServiceImpl entryServiceImpl(AccountRepositoryPort accountRepository, EntryRepositoryPort entryRepository) {
-        return new EntryServiceImpl(accountRepository,entryRepository);
+    EntryServiceImpl entryServiceImpl(AccountRepositoryPort accountRepository, EntryRepositoryPort entryRepository, QueuePort queuePort) {
+        return new EntryServiceImpl(accountRepository,entryRepository, queuePort);
     }
 
     @Bean

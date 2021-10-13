@@ -2,7 +2,7 @@ package br.com.mycoin.adapters.configuration.security.service;
 
 
 import br.com.mycoin.application.domain.Account;
-import br.com.mycoin.application.ports.outbound.AccountRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.AccountRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

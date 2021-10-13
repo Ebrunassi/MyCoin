@@ -2,7 +2,7 @@ package br.com.mycoin.application.services;
 
 import br.com.mycoin.application.domain.Account;
 import br.com.mycoin.application.domain.utils.Criptografia;
-import br.com.mycoin.application.ports.outbound.AccountRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.AccountRepositoryPort;
 import br.com.mycoin.application.ports.inbound.LoginServicePort;
 
 public class LoginServiceImpl implements LoginServicePort {

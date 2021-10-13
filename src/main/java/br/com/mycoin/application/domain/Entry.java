@@ -24,7 +24,8 @@ public class Entry {
     private Integer instalmentsTotal;
     private Integer instalmentNumber;
     private Date creationDate;
-    private Status status;
+    private StatusEnum status;
+    private EventEnum event;
     private List<Situation> situationHistory;
 
     public void addSituation(StatusEnum status, EventEnum event){
@@ -33,5 +34,11 @@ public class Entry {
                 .event(event)
                 .processDate(new Date())
                 .build());
+
+        updateCurrentStatus(status, event);
+    }
+    public void updateCurrentStatus(StatusEnum status, EventEnum event){
+        this.status = status;
+        this.event = event;
     }
 }

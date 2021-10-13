@@ -1,8 +1,8 @@
-package br.com.mycoin.adapters.outbound;
+package br.com.mycoin.adapters.outbound.persistence;
 
 import br.com.mycoin.adapters.outbound.persistence.entity.AccountEntity;
 import br.com.mycoin.application.domain.Account;
-import br.com.mycoin.application.ports.outbound.AccountRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.AccountRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;

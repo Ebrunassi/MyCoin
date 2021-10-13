@@ -6,10 +6,12 @@ import br.com.mycoin.application.domain.Situation;
 import br.com.mycoin.application.domain.enums.EventEnum;
 import br.com.mycoin.application.domain.enums.StatusEnum;
 import br.com.mycoin.application.ports.inbound.EntryServicePort;
-import br.com.mycoin.application.ports.outbound.AccountRepositoryPort;
-import br.com.mycoin.application.ports.outbound.EntryRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.AccountRepositoryPort;
+import br.com.mycoin.application.ports.outbound.persistence.EntryRepositoryPort;
+import br.com.mycoin.application.ports.outbound.queue.QueuePort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,27 +21,26 @@ import java.util.Date;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
+@Log4j2
 public class EntryServiceImpl implements EntryServicePort {
 
+    private QueuePort queuePort;
     private AccountRepositoryPort accountRepository;
     private EntryRepositoryPort entryRepository;
     @Autowired private ObjectMapper mapper;
-    @Autowired private RabbitTemplate rabbitTemplate;
-    @Value("${rabbitmq.exchange.entry}") private String exchange;
-    @Value("${rabbitmq.routing-key.entry}") private String routingKey;
 
-    public EntryServiceImpl(AccountRepositoryPort accountRepository, EntryRepositoryPort entryRepository) {
+    public EntryServiceImpl(AccountRepositoryPort accountRepository, EntryRepositoryPort entryRepository, QueuePort queuePort) {
         this.accountRepository = accountRepository;
         this.entryRepository = entryRepository;
+        this.queuePort = queuePort;
     }
 
     @Override
     public Entry registerEntry(Entry entry) {
         List<Account> account = accountRepository.findByUsername(entry.getUserId());
         if(account != null && account.size() > 0){
-            System.out.println("Account size : " + account.size());
-            System.out.println("User id: " + account.get(0).getId() + " - Usename '"+account.get(0).getUsername()+"', password '"+account.get(0).getPassword()+"'");
+            log.info("Account size : " + account.size());
+            log.info("User id: " + account.get(0).getId() + " - Usename '"+account.get(0).getUsername()+"', password '"+account.get(0).getPassword()+"'");
         }
         // Create message and send to queue
         entry.setCreationDate(new Date());
@@ -51,31 +52,27 @@ public class EntryServiceImpl implements EntryServicePort {
                 .build());
 
         Entry entryReturn = entryRepository.save(entry);
-        sendEntryQueue(entryReturn);
+        queuePort.sendEntryQueue(entryReturn);      // Send to queue
         return entryReturn;
     }
 
     @Override
-    public void processEntry(Entry entry) {
+    public void receiveEntryQueue(Entry entry) {
         try {
-            System.out.println("Recebido da fila : " + mapper.writeValueAsString(entry));
-            entry.addSituation(StatusEnum.SENDING_QUEUE, EventEnum.PROCESSED);
+            log.info("Received from queue : " + mapper.writeValueAsString(entry));
+            entry.addSituation(StatusEnum.RECEIVE_QUEUE, EventEnum.PROCESSED);
+            entry.addSituation(StatusEnum.WAITING_PROCESS, EventEnum.STOPPED);
             entryRepository.save(entry);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendEntryQueue(Entry entry){
+    @Override
+    public void processEntry(StatusEnum status, EventEnum event) {
+        List<Entry> entriesToProcess = entryRepository.findByStatusAndEvent(status, event);
+        log.info("There are '{}' entries to process", entriesToProcess.size());
 
-        try {
-            System.out.println("Sending to queue : " + mapper.writeValueAsString(entry));
-            rabbitTemplate.convertAndSend(exchange,routingKey, mapper.writeValueAsString(entry), m -> {
-                m.getMessageProperties().setContentType(APPLICATION_JSON_VALUE);
-                return m;
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        // TODO - Process the entries
     }
 }
