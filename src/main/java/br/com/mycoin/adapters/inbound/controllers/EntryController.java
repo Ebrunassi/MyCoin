@@ -24,8 +24,8 @@ import javax.validation.Valid;
 @EnableAutoConfiguration
 @Slf4j
 public class EntryController {
-    @Autowired
-    private EntryServicePort entryServicePort;
+        @Autowired
+        private EntryServicePort entryServicePort;
 
     @ApiOperation(value = "Register an entry")
     @ApiResponses(value = @ApiResponse(code = 200, message = "OK", response = String.class))
