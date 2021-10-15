@@ -20,16 +20,21 @@ public class EntryEntity {
     @Id
     private String id;
     private String userId;
-    private String avoiceId;
     private EntryType entryType;
+    private String bank;
     private Boolean credit;
     private Category category;
-    private String bank;
     private Double value;
-    private Integer instalmentsTotal;
-    private Integer instalmentNumber;
     private Date creationDate;
     private StatusEnum status;
     private EventEnum event;
+
+    private String avoiceId;
+    private Integer instalmentsTotal;
+    private Integer instalmentNumber;
+
+    private Integer rememberDate;
+    private Integer dueDate;
+
     private List<Situation> situationHistory;
 }

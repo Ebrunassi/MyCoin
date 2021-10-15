@@ -12,15 +12,12 @@ import br.com.mycoin.application.ports.outbound.queue.QueuePort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Log4j2
 public class EntryServiceImpl implements EntryServicePort {
 
@@ -37,6 +34,7 @@ public class EntryServiceImpl implements EntryServicePort {
 
     @Override
     public Entry registerEntry(Entry entry) {
+
         List<Account> account = accountRepository.findByUsername(entry.getUserId());
         if(account != null && account.size() > 0){
             log.info("Account size : " + account.size());

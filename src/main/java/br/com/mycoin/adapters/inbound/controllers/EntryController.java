@@ -37,6 +37,7 @@ public class EntryController {
 
         log.info("Registering a new entry..");
         String user = TokenAuthenticationService.authenticateToken(token);
+
         Entry entry = new Entry();
         entry.setUserId(user);
 

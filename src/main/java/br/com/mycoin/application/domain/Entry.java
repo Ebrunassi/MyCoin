@@ -2,6 +2,7 @@ package br.com.mycoin.application.domain;
 
 import br.com.mycoin.application.domain.enums.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 import java.util.List;
@@ -13,19 +14,25 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Entry {
+
     private String id;
     private String userId;
-    private String avoiceId;
     private EntryType entryType;
+    private String bank;
     private Boolean credit;
     private Category category;
-    private String bank;
     private Double value;
-    private Integer instalmentsTotal;
-    private Integer instalmentNumber;
     private Date creationDate;
     private StatusEnum status;
     private EventEnum event;
+
+    private String avoiceId;
+    private Integer instalmentsTotal;
+    private Integer instalmentNumber;
+
+    private Integer rememberDate;
+    private Integer dueDate;
+
     private List<Situation> situationHistory;
 
     public void addSituation(StatusEnum status, EventEnum event){
